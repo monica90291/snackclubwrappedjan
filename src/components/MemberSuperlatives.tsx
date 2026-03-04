@@ -36,8 +36,8 @@ const MemberSuperlatives = () => {
             >
               <span className="text-3xl block mb-2">{s.emoji}</span>
               <h3 className="font-serif text-lg font-bold text-gold mb-1">{s.title}</h3>
-              <p className="font-sans font-semibold text-cream text-base mb-2">{s.winner}</p>
-              <p className="font-sans text-sm text-cream/70 leading-relaxed">{s.desc}</p>
+              <p className="font-sans font-semibold text-foreground text-base mb-2">{s.winner}</p>
+              <p className="font-sans text-sm text-foreground/70 leading-relaxed">{s.desc}</p>
             </div>
           ))}
         </div>
