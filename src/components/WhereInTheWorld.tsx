@@ -1,26 +1,190 @@
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { useEffect, useState } from "react";
 
 const cities = [
-  { name: "San Francisco / Bay Area", count: "25+", top: true, x: 15, y: 42 },
-  { name: "Los Angeles", count: "12", x: 14, y: 45 },
-  { name: "New York City", count: "11", x: 27, y: 41 },
-  { name: "Seattle", count: "6", x: 14, y: 35 },
-  { name: "San Diego", count: "5", x: 14, y: 47 },
-  { name: "Denver / CO", count: "4", x: 18, y: 41 },
-  { name: "Boston", count: "4", x: 28, y: 39 },
-  { name: "Austin", count: "3", x: 19, y: 50 },
-  { name: "Washington DC", count: "3", x: 26, y: 42 },
-  { name: "Barcelona", count: "3", x: 48, y: 40 },
-  { name: "Chicago", count: "3", x: 23, y: 39 },
-  { name: "London", count: "2", x: 47, y: 34 },
-  { name: "Cincinnati", count: "2", x: 24, y: 42 },
+  { name: "San Francisco / Bay Area", count: "25+", top: true },
+  { name: "Los Angeles", count: "12" },
+  { name: "New York City", count: "11" },
+  { name: "Seattle", count: "6" },
+  { name: "San Diego", count: "5" },
+  { name: "Denver / CO", count: "4" },
+  { name: "Boston", count: "4" },
+  { name: "Austin", count: "3" },
+  { name: "Washington DC", count: "3" },
+  { name: "Barcelona", count: "3" },
+  { name: "Chicago", count: "3" },
+  { name: "London", count: "2" },
+  { name: "Cincinnati", count: "2" },
 ];
 
-const extraPins = [
-  { name: "Ghana", x: 47, y: 57 },
-  { name: "Abu Dhabi", x: 60, y: 48 },
-  { name: "Oslo", x: 49, y: 28 },
+// Mercator projection helper
+const toMercator = (lng: number, lat: number, width: number, height: number) => {
+  const x = ((lng + 180) / 360) * width;
+  const latRad = (lat * Math.PI) / 180;
+  const mercN = Math.log(Math.tan(Math.PI / 4 + latRad / 2));
+  const y = height / 2 - (mercN / Math.PI) * (height / 2);
+  return { x, y };
+};
+
+interface MapPin {
+  name: string;
+  count?: string;
+  lat: number;
+  lng: number;
+  labelSide: "left" | "right";
+  region: string;
+  top?: boolean;
+}
+
+const mapPins: MapPin[] = [
+  { name: "San Francisco", count: "25+", lat: 37.77, lng: -122.42, labelSide: "left", region: "North America", top: true },
+  { name: "Los Angeles", count: "12", lat: 34.05, lng: -118.24, labelSide: "left", region: "North America" },
+  { name: "New York City", count: "11", lat: 40.71, lng: -74.01, labelSide: "left", region: "North America" },
+  { name: "Seattle", count: "6", lat: 47.61, lng: -122.33, labelSide: "left", region: "North America" },
+  { name: "San Diego", count: "5", lat: 32.72, lng: -117.16, labelSide: "left", region: "North America" },
+  { name: "Denver", count: "4", lat: 39.74, lng: -104.99, labelSide: "left", region: "North America" },
+  { name: "Boston", count: "4", lat: 42.36, lng: -71.06, labelSide: "left", region: "North America" },
+  { name: "Austin", count: "3", lat: 30.27, lng: -97.74, labelSide: "left", region: "North America" },
+  { name: "Washington DC", count: "3", lat: 38.91, lng: -77.04, labelSide: "left", region: "North America" },
+  { name: "Chicago", count: "3", lat: 41.88, lng: -87.63, labelSide: "left", region: "North America" },
+  { name: "Cincinnati", count: "2", lat: 39.10, lng: -84.51, labelSide: "left", region: "North America" },
+  { name: "Barcelona", count: "3", lat: 41.39, lng: 2.17, labelSide: "right", region: "Europe" },
+  { name: "London", count: "2", lat: 51.51, lng: -0.13, labelSide: "right", region: "Europe" },
+  { name: "Oslo, Norway", lat: 59.91, lng: 10.75, labelSide: "right", region: "Europe" },
+  { name: "Accra, Ghana", lat: 5.60, lng: -0.19, labelSide: "right", region: "Africa" },
+  { name: "Abu Dhabi", lat: 24.45, lng: 54.65, labelSide: "right", region: "Middle East" },
 ];
+
+const WorldMap = () => {
+  const [paths, setPaths] = useState<string[]>([]);
+  const W = 960;
+  const H = 500;
+
+  useEffect(() => {
+    // Fetch a lightweight world map GeoJSON
+    fetch("https://cdn.jsdelivr.net/npm/world-atlas@2/land-110m.json")
+      .then((r) => r.json())
+      .then((topology) => {
+        // Convert TopoJSON to simple paths
+        const land = topology.objects.land;
+        const arcs = topology.arcs;
+
+        // Decode arcs
+        const decodedArcs = arcs.map((arc: number[][]) => {
+          let x = 0, y = 0;
+          return arc.map((point: number[]) => {
+            x += point[0];
+            y += point[1];
+            return [x, y];
+          });
+        });
+
+        const transform = topology.transform;
+        const transformPoint = (p: number[]) => [
+          p[0] * transform.scale[0] + transform.translate[0],
+          p[1] * transform.scale[1] + transform.translate[1],
+        ];
+
+        // Convert arc indices to coordinates
+        const arcToCoords = (arcIdx: number) => {
+          const reverse = arcIdx < 0;
+          const idx = reverse ? ~arcIdx : arcIdx;
+          const coords = decodedArcs[idx].map(transformPoint);
+          return reverse ? coords.slice().reverse() : coords;
+        };
+
+        const ringToPath = (ring: number[]) => {
+          const coords = ring.flatMap((arcIdx) => arcToCoords(arcIdx));
+          return coords
+            .map((c, i) => {
+              const p = toMercator(c[0], c[1], W, H);
+              return `${i === 0 ? "M" : "L"}${p.x.toFixed(1)},${p.y.toFixed(1)}`;
+            })
+            .join("") + "Z";
+        };
+
+        const geoToPath = (geo: any): string[] => {
+          if (geo.type === "Polygon") {
+            return [geo.arcs.map(ringToPath).join("")];
+          }
+          if (geo.type === "MultiPolygon") {
+            return geo.arcs.map((polygon: number[][]) =>
+              polygon.map(ringToPath).join("")
+            );
+          }
+          return [];
+        };
+
+        const geometries = land.geometries || [land];
+        const allPaths = geometries.flatMap((g: any) => geoToPath(g));
+        setPaths(allPaths);
+      })
+      .catch(() => {
+        // Fallback: no map paths
+      });
+  }, []);
+
+  const pinPositions = mapPins.map((pin) => ({
+    ...pin,
+    ...toMercator(pin.lng, pin.lat, W, H),
+  }));
+
+  // Group labels by side
+  const leftLabels = pinPositions.filter((p) => p.labelSide === "left");
+  const rightLabels = pinPositions.filter((p) => p.labelSide === "right");
+
+  const leftX = 30;
+  const rightX = W - 30;
+
+  return (
+    <div className="scroll-fade-up mb-16 rounded-2xl bg-midnight overflow-hidden">
+      <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto" xmlns="http://www.w3.org/2000/svg">
+        {/* Map land */}
+        {paths.map((d, i) => (
+          <path key={i} d={d} fill="hsl(var(--muted))" stroke="hsl(var(--border))" strokeWidth="0.5" opacity="0.3" />
+        ))}
+
+        {/* Leader lines + labels — Left side */}
+        {leftLabels.map((pin, i) => {
+          const labelY = 80 + i * 28;
+          return (
+            <g key={`left-${i}`}>
+              <line x1={pin.x} y1={pin.y} x2={leftX + 140} y2={labelY} stroke="hsl(var(--muted-foreground))" strokeWidth="0.5" opacity="0.5" />
+              <text x={leftX + 135} y={labelY + 4} textAnchor="end" fill="hsl(var(--cream))" fontSize="11" fontFamily="'DM Sans', sans-serif">
+                {pin.name}{pin.count ? ` — ${pin.count}` : ""}
+              </text>
+            </g>
+          );
+        })}
+
+        {/* Leader lines + labels — Right side */}
+        {rightLabels.map((pin, i) => {
+          const labelY = 100 + i * 32;
+          return (
+            <g key={`right-${i}`}>
+              <line x1={pin.x} y1={pin.y} x2={rightX - 140} y2={labelY} stroke="hsl(var(--muted-foreground))" strokeWidth="0.5" opacity="0.5" />
+              <text x={rightX - 135} y={labelY + 4} textAnchor="start" fill="hsl(var(--cream))" fontSize="11" fontFamily="'DM Sans', sans-serif">
+                {pin.name}{pin.count ? ` — ${pin.count}` : ""}
+              </text>
+            </g>
+          );
+        })}
+
+        {/* Region headers */}
+        <text x={leftX} y={60} fill="hsl(var(--cream))" fontSize="14" fontWeight="700" fontFamily="'DM Sans', sans-serif">North America</text>
+        <text x={rightX - 50} y={80} fill="hsl(var(--cream))" fontSize="14" fontWeight="700" fontFamily="'DM Sans', sans-serif" textAnchor="end">International</text>
+
+        {/* Pins */}
+        {pinPositions.map((pin, i) => (
+          <g key={`pin-${i}`}>
+            <circle cx={pin.x} cy={pin.y} r={pin.top ? 7 : 5} fill="hsl(var(--coral))" opacity="0.9" />
+            <circle cx={pin.x} cy={pin.y} r={pin.top ? 3 : 2} fill="hsl(var(--cream))" opacity="0.6" />
+          </g>
+        ))}
+      </svg>
+    </div>
+  );
+};
 
 const WhereInTheWorld = () => {
   const ref = useScrollAnimation();
@@ -48,60 +212,7 @@ const WhereInTheWorld = () => {
           ))}
         </div>
 
-        {/* Map View */}
-        <div className="scroll-fade-up mb-16 rounded-2xl bg-card border border-border shadow-sm overflow-hidden p-4 sm:p-8">
-          <svg viewBox="0 0 100 70" className="w-full h-auto" xmlns="http://www.w3.org/2000/svg">
-            {/* Simplified world map continents */}
-            <defs>
-              <radialGradient id="pinGlow" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stopColor="hsl(0 100% 71%)" stopOpacity="0.4" />
-                <stop offset="100%" stopColor="hsl(0 100% 71%)" stopOpacity="0" />
-              </radialGradient>
-            </defs>
-            {/* North America */}
-            <path d="M8,25 Q12,20 20,22 Q25,20 30,25 Q32,30 30,38 Q28,42 25,48 Q22,52 18,54 Q14,52 12,48 Q8,42 6,35 Q5,30 8,25Z" fill="hsl(var(--muted))" opacity="0.5" />
-            {/* South America */}
-            <path d="M22,56 Q25,54 27,58 Q28,64 26,68 Q23,70 21,68 Q19,64 20,60Z" fill="hsl(var(--muted))" opacity="0.5" />
-            {/* Europe */}
-            <path d="M44,22 Q48,20 52,22 Q54,26 52,32 Q50,36 48,38 Q45,40 43,36 Q42,30 44,22Z" fill="hsl(var(--muted))" opacity="0.5" />
-            {/* Africa */}
-            <path d="M45,42 Q50,40 54,44 Q56,50 55,58 Q52,64 48,66 Q44,64 43,58 Q42,50 45,42Z" fill="hsl(var(--muted))" opacity="0.5" />
-            {/* Asia */}
-            <path d="M55,20 Q62,18 70,20 Q78,22 82,28 Q84,34 80,40 Q75,45 68,48 Q62,50 58,46 Q54,40 54,34 Q53,28 55,20Z" fill="hsl(var(--muted))" opacity="0.5" />
-            {/* Australia */}
-            <path d="M78,54 Q82,52 86,54 Q88,58 86,62 Q82,64 78,62 Q76,58 78,54Z" fill="hsl(var(--muted))" opacity="0.5" />
-
-            {/* City pins */}
-            {cities.map((city, i) => (
-              <g key={i}>
-                <circle cx={city.x} cy={city.y} r={city.top ? 2.5 : 1.2} fill="url(#pinGlow)" />
-                <circle
-                  cx={city.x}
-                  cy={city.y}
-                  r={city.top ? 1 : 0.6}
-                  fill="hsl(var(--coral))"
-                  stroke="hsl(var(--cream))"
-                  strokeWidth="0.2"
-                />
-                {city.top && (
-                  <text x={city.x} y={city.y - 2} textAnchor="middle" fill="hsl(var(--foreground))" fontSize="1.8" fontFamily="sans-serif" fontWeight="600">
-                    SF
-                  </text>
-                )}
-              </g>
-            ))}
-            {/* Extra international pins */}
-            {extraPins.map((pin, i) => (
-              <g key={`extra-${i}`}>
-                <circle cx={pin.x} cy={pin.y} r={1.2} fill="url(#pinGlow)" />
-                <circle cx={pin.x} cy={pin.y} r={0.5} fill="hsl(var(--gold))" stroke="hsl(var(--cream))" strokeWidth="0.2" />
-              </g>
-            ))}
-          </svg>
-          <p className="text-center text-muted-foreground text-xs mt-2 font-sans">
-            📍 <span className="text-coral">Coral</span> = member cities &nbsp; <span className="text-gold">●</span> = farthest members
-          </p>
-        </div>
+        <WorldMap />
 
         <div className="scroll-fade-up grid grid-cols-1 sm:grid-cols-3 gap-6">
           <div
