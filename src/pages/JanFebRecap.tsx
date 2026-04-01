@@ -12,7 +12,9 @@ import FooterSection from "@/components/FooterSection";
 const JanFebRecap = () => {
   return (
     <main className="overflow-x-hidden">
-      <section
+      <Link to="/" className="fixed top-6 left-6 z-50 flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-cream font-sans text-sm hover:bg-white/20 transition-all duration-200">
+        <ArrowLeft className="w-4 h-4" /> Home
+      </Link>
         className="py-20 sm:py-28 px-6 flex items-center justify-center"
         style={{
           background: "linear-gradient(135deg, hsl(266 38% 13%) 0%, hsl(315 40% 30%) 50%, hsl(0 100% 71%) 100%)",
