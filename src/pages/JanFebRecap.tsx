@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 import ByTheNumbers from "@/components/ByTheNumbers";
 import SnackReport from "@/components/SnackReport";
 import WhereInTheWorld from "@/components/WhereInTheWorld";
