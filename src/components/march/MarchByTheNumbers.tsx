@@ -2,7 +2,7 @@ import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 const stats = [
   { emoji: "🚀", number: "630+", label: "Members and counting (up from 130+ in January!)" },
-  { emoji: "🌎", number: "20+", label: "Countries represented" },
+  { emoji: "🌎", number: "20+", label: "Countries represented (USA, UK, Canada, Germany, France, Brazil, Spain, Norway, Greece, India, Morocco, Australia, Netherlands, Hungary, Hong Kong, Mexico, Belgium, Nigeria...)" },
   { emoji: "🏙️", number: "9", label: "City channels launched (Austin, Boston, Chicago, London, LA, NYC, SF, Seattle, DC)" },
   { emoji: "👩‍💻", number: "70+", label: "Women at the IWD Build Night with Lovable" },
   { emoji: "🐶", number: "30+", label: "Pets mentioned by name (Frida, Fergus, Minky, Chinny, Biff, Duck, Dash, Marie Curie the donkey...)" },

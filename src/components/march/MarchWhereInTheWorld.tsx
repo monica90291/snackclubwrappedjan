@@ -20,6 +20,15 @@ const cities = [
   { name: "Portland", count: "2+" },
 ];
 
+const farthestMembers = [
+  { name: "Marina", location: "Thessaloniki, Greece", flag: "🇬🇷" },
+  { name: "Ikuska", location: "Barcelona, Spain", flag: "🇪🇸" },
+  { name: "Caroline", location: "Berlin, Germany", flag: "🇩🇪" },
+  { name: "Jeanette", location: "Oslo, Norway", flag: "🇳🇴" },
+  { name: "Mary Alice", location: "Montpellier, France", flag: "🇫🇷" },
+  { name: "Yasmin", location: "Porto Alegre, Brazil", flag: "🇧🇷" },
+];
+
 const MarchWhereInTheWorld = () => {
   const ref = useScrollAnimation();
 
@@ -49,7 +58,7 @@ const MarchWhereInTheWorld = () => {
           ))}
         </div>
 
-        <div className="scroll-fade-up grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+        <div className="scroll-fade-up grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
           <div className="glass-card rounded-xl p-6 text-center">
             <span className="font-serif text-3xl font-bold text-gold block">20+</span>
             <p className="font-sans text-sm text-cream/70 mt-1">Countries</p>
@@ -58,11 +67,22 @@ const MarchWhereInTheWorld = () => {
             <span className="font-serif text-3xl font-bold text-gold block">6</span>
             <p className="font-sans text-sm text-cream/70 mt-1">Continents members have lived on</p>
           </div>
-          <div className="glass-card rounded-xl p-6 text-center">
-            <span className="text-2xl block mb-1">🌍</span>
-            <p className="font-sans text-xs text-cream/70 leading-relaxed">
-              Farthest members: Marina in Thessaloniki, Ikuska in Barcelona, Caroline in Berlin, Jeanette in Oslo, Mary Alice in Montpellier, Yasmin in Porto Alegre
-            </p>
+        </div>
+
+        {/* Farthest members standout */}
+        <div className="scroll-fade-up rounded-2xl p-8 border-2 border-gold/30 bg-white/10 backdrop-blur-sm">
+          <div className="text-center mb-6">
+            <span className="text-3xl block mb-2">✈️</span>
+            <h3 className="font-serif text-xl font-bold text-gold">Our Farthest-Flung Members</h3>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            {farthestMembers.map((m, i) => (
+              <div key={i} className="text-center p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors">
+                <span className="text-2xl block mb-1">{m.flag}</span>
+                <p className="font-sans font-semibold text-cream text-sm">{m.name}</p>
+                <p className="font-sans text-cream/50 text-xs">{m.location}</p>
+              </div>
+            ))}
           </div>
         </div>
       </div>
