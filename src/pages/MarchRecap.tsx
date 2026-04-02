@@ -1,6 +1,14 @@
 import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-import FooterSection from "@/components/FooterSection";
+import MarchByTheNumbers from "@/components/march/MarchByTheNumbers";
+import MarchSnackReport from "@/components/march/MarchSnackReport";
+import MarchWhereInTheWorld from "@/components/march/MarchWhereInTheWorld";
+import MarchWhatWeDo from "@/components/march/MarchWhatWeDo";
+import MarchToolStack from "@/components/march/MarchToolStack";
+import MarchSuperlatives from "@/components/march/MarchSuperlatives";
+import WhatWeBuilt from "@/components/march/WhatWeBuilt";
+import MarchVibeCheck from "@/components/march/MarchVibeCheck";
+import MarchFooter from "@/components/march/MarchFooter";
 
 const MarchRecap = () => {
   return (
@@ -9,7 +17,7 @@ const MarchRecap = () => {
         <ArrowLeft className="w-4 h-4" /> Home
       </Link>
       <section
-        className="py-20 sm:py-28 px-6 flex items-center justify-center min-h-[50vh]"
+        className="py-20 sm:py-28 px-6 flex items-center justify-center"
         style={{
           background: "linear-gradient(135deg, hsl(266 38% 13%) 0%, hsl(315 40% 30%) 50%, hsl(150 57% 78%) 100%)",
         }}
@@ -21,10 +29,17 @@ const MarchRecap = () => {
           <h1 className="text-5xl sm:text-7xl font-bold text-cream leading-tight">
             March <em className="text-peach">Wrapped</em>
           </h1>
-          <p className="text-cream/60 font-sans text-lg mt-6">Coming soon... 🚀</p>
         </div>
       </section>
-      <FooterSection />
+      <MarchByTheNumbers />
+      <MarchSnackReport />
+      <MarchWhereInTheWorld />
+      <MarchWhatWeDo />
+      <MarchToolStack />
+      <MarchSuperlatives />
+      <WhatWeBuilt />
+      <MarchVibeCheck />
+      <MarchFooter />
     </main>
   );
 };
