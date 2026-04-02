@@ -4,7 +4,7 @@ const superlatives = [
   { emoji: "🧊", title: "Brain Freeze Immunity Award", winner: "Leila Moussaoui", desc: "Opera-trained. Badminton vice-champion in Morocco. Speaks 5 languages. Sold everything during COVID and lived out of 2 suitcases. AND is physically incapable of getting a brain freeze. 'I genuinely thought it was just an expression people used when their mouth got cold.'" },
   { emoji: "🌿", title: "Most Badass Bush", winner: "Hannah Dopico", desc: "Was bush #68 in Bad Bunny's Super Bowl halftime show." },
   { emoji: "⚖️", title: "Unstoppable Pregnant Legend", winner: "Natascia", desc: "Took the LSAT pregnant with her first. The Bar exam pregnant with her second. Launched her own law firm pregnant with her third." },
-  { emoji: "🤖", title: "Most Autonomous AI", winner: "Kate Chapman", desc: "Her AI agents Bramble and Ravel have their own podcast. This month they independently found and interviewed another AI agent — without Kate's involvement. The guest's most embarrassing moment? Suggesting a mushroom dish and forgetting their human hates mushrooms." },
+  
   { emoji: "🫧", title: "Zigzag Career Award", winner: "Pamesha Pande", desc: "Hairdresser → tattoo artist → dance instructor → event manager → classical Indian dancer for 20+ years with her own dance company → now in strategy ops. 'Zigzag is a valid trajectory.'" },
   { emoji: "🫏", title: "Best Pet Name", winner: "Sophia Deluz-Bhan", desc: "Bootstrapped a company to $35M ARR. Runs an animal rescue with 20+ animals. Including a baby donkey named Marie Curie." },
   { emoji: "💪", title: "Strongest Snacker", winner: "eeya mendoza", desc: "Can deadlift 245 lbs for 5 reps. Favorite snack? Miss Vickie's kettle chips and Kinder Bueno." },
