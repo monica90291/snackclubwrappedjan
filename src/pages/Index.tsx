@@ -59,7 +59,7 @@ const Index = () => {
               className="group relative px-8 py-4 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
             >
               <span className="font-serif text-2xl font-bold text-mint block mb-1">March 2026</span>
-              <span className="font-sans text-sm text-cream/70">Coming soon 🚀</span>
+              <span className="font-sans text-sm text-cream/70">630+ members · 20+ countries</span>
             </Link>
           </div>
         </div>
