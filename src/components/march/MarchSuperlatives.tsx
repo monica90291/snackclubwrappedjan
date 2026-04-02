@@ -13,14 +13,9 @@ const superlatives = [
   { emoji: "🎸", title: "Most Metal", winner: "Ikuska", desc: "Avid Metallica fan (6 concerts, next one Budapest June 2026). Learning electric guitar from scratch. Speaks 5 languages, learning the 6th. Favorite place on Earth: Torres del Paine, Patagonia." },
   { emoji: "🐕", title: "Best Side Hustle", winner: "Kierstin Geary", desc: "Runs 'Must Love Dogs SoCal' — a wedding day dog handling service. Because every couple deserves their dog in the ceremony photos." },
   { emoji: "🧶", title: "Grandma Hobby Club Expands", winner: "Liana Steir, Hilary Owen, Lillian Barclay, Yasmin Stivelman & more", desc: "Liana embroiders Trader Joe's bags. Hilary has a degree in knitwear design. Lillian builds miniature dollhouse furniture. Yasmin is a ceramist. Gabriela has a mini painting studio in the corner of her room." },
-  { emoji: "🎬", title: "Hollywood Crossover", winner: "Diana Olympia", desc: "Her dog Biff won 'Best Couch Potato' on ABC's American Rescue Dog Show. Was wheeled onstage on a couch. Biff kissed Paula Abdul." },
   { emoji: "🧠", title: "Most Languages in One Human", winner: "Nicole Lee", desc: "Speaks 6 languages fluently. Holly Higgins close behind with 5. The polyglot energy in this community is unmatched." },
   { emoji: "🎯", title: "Fastest Career Pivot", winner: "Melissa Murphy", desc: "Went from zero coding knowledge to fixing bugs on a law firm's platform using Claude Code. 'I can't believe how fun this is!!'" },
   { emoji: "🏋️‍♀️", title: "Most Impressive Double Life", winner: "Amy Sussman", desc: "Single mom of 2, busy sales role, AND training for Hyrox competitions. Built her own custom training platform that adjusts around her custody schedule." },
-  { emoji: "🎪", title: "Best Origin Story", winner: "Alex Chung", desc: "Ran a Maroon 5 fan Twitter at 13. Adam Levine sent her a guitar. Now she's building with AI." },
-  { emoji: "🌋", title: "Most Lives Lived", winner: "Evelyn Cools", desc: "Belgium, USA (6 cities!), Germany, Hungary, Hong Kong & the UK. Has reinvented herself in every timezone." },
-  { emoji: "🐔", title: "Most Literal Industry Expert", winner: "Ashley Caudill", desc: "Background: 'everything poultry' 🐓. Also a mom of multiples. Peak multitasking." },
-  { emoji: "🧡", title: "Full Circle Moment", winner: "Stephanie Marie Ivanick", desc: "Once babysat our very own Monica Abrams. Now they're in the same AI community. The universe has a plan." },
 ];
 
 const MarchSuperlatives = () => {
