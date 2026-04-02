@@ -1,18 +1,19 @@
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { ExternalLink } from "lucide-react";
 
 const builds = [
-  { emoji: "🏆", name: "Jamari Snipes", project: "AI Chief of Staff", desc: "Built an AI system that reviews her entire business every morning — pulls calendars, tasks, bottlenecks, and emails into Notion, then sends a briefing newsletter to her inbox." },
-  { emoji: "📊", name: "Kathy", project: "Financial Report Automation", desc: "Automating one financial report per week with Claude. Sales → AR Aging → ARR → Board reporting. 'I think I blew my VP of Finance's mind.'" },
-  { emoji: "📱", name: "Jenia Zimmerman", project: "Atta — Women's Health App", desc: "Launched on the App Store after 5 months of building with Lovable. 118 users in the first 3 days." },
-  { emoji: "🍽️", name: "Allie Dono", project: "Tried & Tasted", desc: "A personal restaurant diary app built during a 45-min co-working session. First vibe coding project built without any help." },
-  { emoji: "🎵", name: "Swati Sachdeva", project: "Personal Music Player", desc: "Discovered hundreds of pre-Spotify MP3s on her laptop and built an app on Lovable to play them. 'Wishing for something and having it delivered the next moment is such a powerful feeling.'" },
-  { emoji: "💰", name: "Erica Bailey", project: "Sales Tax Calculator", desc: "Built a tool on Lovable to auto-calculate taxable sales from DoorDash, GrubHub, UberEats, EZCater, and POS reports. For her 'most pain in the ass' client." },
-  { emoji: "🎤", name: "Shayna", project: "AI in Mental Health Keynote", desc: "Stepped up and gave a keynote on AI in the mental health space at a conference. 'I couldn't have done it without this community.'" },
-  { emoji: "👶", name: "Antarika Sen", project: "tinyfingersmash.com", desc: "Built a website so her toddler can safely smash the keyboard. Educational letter cards pop up with soothing sounds. No more screaming 'NoOoO!'" },
-  { emoji: "🏋️", name: "Amy Sussman", project: "Hyrox Training Platform", desc: "Single mom of 2 in a busy sales role. Built a custom training platform that adjusts around her custody schedule and how she's feeling." },
-  { emoji: "🏢", name: "Mikayla Stewart", project: "Full Company OS", desc: "Built an internal operating system in 5 hours. Auth0, Granola integration, invoices, commission payouts, analytics, and client portals. Killed HubSpot, ClickUp, and Google Drive in the process." },
-  { emoji: "🌸", name: "Jennie Salas", project: "Rise & Post", desc: "A LinkedIn content studio to capture ideas, craft posts, and stay consistent. Built by someone who joined the community to overcome imposter syndrome." },
-  { emoji: "⚖️", name: "Melissa Murphy", project: "Legal Platform Bug Fixes", desc: "Learned to code using Claude Code and Claude Cowork — now creating bug fixes for a law firm's platform. 'I can't believe how fun this is!!'" },
+  { emoji: "🏆", name: "Jamari Snipes", project: "AI Chief of Staff", desc: "Built an AI system that reviews her entire business every morning — pulls calendars, tasks, bottlenecks, and emails into Notion, then sends a briefing newsletter to her inbox.", link: null },
+  { emoji: "📊", name: "Kathy", project: "Financial Report Automation", desc: "Automating one financial report per week with Claude. Sales → AR Aging → ARR → Board reporting. 'I think I blew my VP of Finance's mind.'", link: null },
+  { emoji: "📱", name: "Jenia Zimmerman", project: "Atta — Women's Health App", desc: "Launched on the App Store after 5 months of building with Lovable. 118 users in the first 3 days.", link: "https://apps.apple.com/app/atta-health/id6742052780" },
+  { emoji: "🍽️", name: "Allie Dono", project: "Tried & Tasted", desc: "A personal restaurant diary app built during a 45-min co-working session. First vibe coding project built without any help.", link: null },
+  { emoji: "🎵", name: "Swati Sachdeva", project: "Personal Music Player", desc: "Discovered hundreds of pre-Spotify MP3s on her laptop and built an app on Lovable to play them. 'Wishing for something and having it delivered the next moment is such a powerful feeling.'", link: null },
+  { emoji: "💰", name: "Erica Bailey", project: "Sales Tax Calculator", desc: "Built a tool on Lovable to auto-calculate taxable sales from DoorDash, GrubHub, UberEats, EZCater, and POS reports. For her 'most pain in the ass' client.", link: null },
+  { emoji: "🎤", name: "Shayna", project: "AI in Mental Health Keynote", desc: "Stepped up and gave a keynote on AI in the mental health space at a conference. 'I couldn't have done it without this community.'", link: null },
+  { emoji: "👶", name: "Antarika Sen", project: "tinyfingersmash.com", desc: "Built a website so her toddler can safely smash the keyboard. Educational letter cards pop up with soothing sounds. No more screaming 'NoOoO!'", link: "https://tinyfingersmash.com" },
+  { emoji: "🏋️", name: "Amy Sussman", project: "Hyrox Training Platform", desc: "Single mom of 2 in a busy sales role. Built a custom training platform that adjusts around her custody schedule and how she's feeling.", link: null },
+  { emoji: "🏢", name: "Mikayla Stewart", project: "Full Company OS", desc: "Built an internal operating system in 5 hours. Auth0, Granola integration, invoices, commission payouts, analytics, and client portals. Killed HubSpot, ClickUp, and Google Drive in the process.", link: null },
+  { emoji: "🌸", name: "Jennie Salas", project: "Rise & Post", desc: "A LinkedIn content studio to capture ideas, craft posts, and stay consistent. Built by someone who joined the community to overcome imposter syndrome.", link: null },
+  { emoji: "⚖️", name: "Melissa Murphy", project: "Legal Platform Bug Fixes", desc: "Learned to code using Claude Code and Claude Cowork — now creating bug fixes for a law firm's platform. 'I can't believe how fun this is!!'", link: null },
 ];
 
 const WhatWeBuilt = () => {
@@ -35,7 +36,7 @@ const WhatWeBuilt = () => {
           {builds.map((b, i) => (
             <div
               key={i}
-              className="scroll-fade-up rounded-2xl p-6 border border-white/10 bg-white/5 hover:bg-white/10 transition-all duration-300 hover:-translate-y-1 relative overflow-hidden"
+              className="scroll-fade-up rounded-2xl p-6 border border-white/10 bg-white/5 hover:bg-white/10 transition-all duration-300 hover:-translate-y-1 relative overflow-hidden group"
             >
               <div className="absolute top-3 right-3 text-white/5 font-mono text-5xl font-bold select-none">
                 {`</>`}
@@ -44,6 +45,16 @@ const WhatWeBuilt = () => {
               <p className="font-sans font-semibold text-cream text-base mb-1">{b.name}</p>
               <h3 className="font-serif text-lg font-bold text-gold mb-2">{b.project}</h3>
               <p className="font-sans text-sm text-cream/60 leading-relaxed">{b.desc}</p>
+              {b.link && (
+                <a
+                  href={b.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 mt-4 px-3 py-1.5 rounded-full text-xs font-sans font-medium bg-gold/20 text-gold border border-gold/30 hover:bg-gold/30 transition-colors"
+                >
+                  Visit <ExternalLink className="w-3 h-3" />
+                </a>
+              )}
             </div>
           ))}
         </div>

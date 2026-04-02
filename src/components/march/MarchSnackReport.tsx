@@ -11,6 +11,13 @@ const snacks = [
   { emoji: "🧀", name: "Cheese (any form)", mentions: 7, width: 32, gradient: "linear-gradient(90deg, hsl(45 90% 55%), hsl(45 70% 40%))" },
 ];
 
+const runnersUp = [
+  { emoji: "🍟🍸", name: "Ava Kreismer", snack: "French fries and a martini", quote: "girl dinner 😂" },
+  { emoji: "🥔", name: "Pamesha Pande", snack: "Hardbite Black Sea Salt chips dipped in Greek yogurt", quote: "I know. I KNOW. But don't knock it till you've tried it." },
+  { emoji: "☕", name: "Ikuska", snack: "Coffee, always coffee", quote: "Every morning is just an excuse to drink coffee again" },
+  { emoji: "🍿", name: "Sophia Deluz-Bhan", snack: "Popcorn with nutritional yeast", quote: "IYKYK" },
+];
+
 const MarchSnackReport = () => {
   const ref = useScrollAnimation();
   const [animateBars, setAnimateBars] = useState(false);
@@ -62,18 +69,32 @@ const MarchSnackReport = () => {
           ))}
         </div>
 
-        <div className="scroll-fade-up glass-card rounded-2xl p-8 text-center">
+        {/* Winner */}
+        <div className="scroll-fade-up glass-card rounded-2xl p-8 text-center mb-8">
           <span className="text-4xl mb-3 block">🏆</span>
           <h3 className="text-2xl font-bold text-gold mb-4">Most Unique Snack Award</h3>
-          <p className="text-cream font-sans font-semibold text-lg mb-3">
-            Shara Felix — "Pinot Noir" (when asked for her favorite snack)
+          <p className="text-cream font-sans font-semibold text-lg">
+            Shara Felix — "Pinot Noir"
           </p>
-          <p className="text-cream/60 font-sans text-sm leading-relaxed">
-            Runners-up: Ava Kreismer's "French fries and a martini (girl dinner 😂)",
-            Pamesha Pande's Hardbite Black Sea Salt chips dipped in Greek yogurt ("I know. I KNOW."),
-            Ikuska who declared "every morning is just an excuse to drink coffee again",
-            and Sophia Deluz-Bhan's popcorn with nutritional yeast ("IYKYK")
-          </p>
+          <p className="text-cream/50 font-sans text-sm mt-1">(when asked for her favorite snack)</p>
+        </div>
+
+        {/* Runners-up as individual cards */}
+        <div className="scroll-fade-up">
+          <p className="text-center text-cream/50 font-sans text-sm mb-4 uppercase tracking-widest">Runners-up</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {runnersUp.map((r, i) => (
+              <div
+                key={i}
+                className="glass-card rounded-xl p-5 hover:-translate-y-1 transition-all duration-300"
+              >
+                <span className="text-2xl block mb-2">{r.emoji}</span>
+                <p className="font-sans font-semibold text-cream text-sm mb-1">{r.name}</p>
+                <p className="font-sans text-peach text-sm font-medium mb-2">{r.snack}</p>
+                <p className="font-sans text-cream/50 text-xs italic">"{r.quote}"</p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
